@@ -12,7 +12,7 @@ ollama pull qwen3.5:9b
 ollama pull qwen2.5-coder:7b
 ollama pull starcoder2:3b
 
-# 2. Build the agent alias (from this repo's root)
+# 2. Build the agent alias (run from the repo root)
 ollama create qwen35-roo:9b -f Modelfile.roo-qwen35-9b
 
 # 3. Install the extension
@@ -190,8 +190,8 @@ In `config.json`, custom commands can use an `arguments` field instead of a `pro
 
 ## See Also
 
-- `Modelfile.roo-qwen35-9b` — the agent alias definition
-- `SETUP.Models.md` — how Modelfiles work, `/no_think` explanation
-- `SETUP.RooCode.md` — Roo Code setup (shares the same model alias)
-- `AGENT.Continue-Setup.md` — full agent context document for LLM assistants
-- `TLDR.md` — one-page model compatibility summary
+- `../Modelfile.roo-qwen35-9b` — the agent alias definition
+- `models.md` — how Modelfiles work, `/no_think` explanation
+- `roo-code.md` — Roo Code setup (shares the same model alias)
+- `agent-context/continue.md` — full agent context document for LLM assistants
+- `../TLDR.md` — one-page model compatibility summary

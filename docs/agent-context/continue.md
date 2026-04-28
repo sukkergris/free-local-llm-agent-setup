@@ -93,7 +93,7 @@ File: `~/.continue/config.json`
 
 | Model | Role | Notes |
 |---|---|---|
-| `qwen35-roo:9b` | Agent + chat | Requires `capabilities: [tool_use]`. Built from qwen3.5:9b with Modelfile — see AGENT.RooCode-Setup.md |
+| `qwen35-roo:9b` | Agent + chat | Requires `capabilities: [tool_use]`. Built from qwen3.5:9b with Modelfile — see `roo-code.md` |
 | `qwen2.5-coder:7b` | Chat — fast | Good for quick questions and code generation |
 | `qwen2.5-coder:32b` | Chat — balanced | Best code quality, slower, higher RAM |
 | `starcoder2:3b` | Tab autocomplete | Small, purpose-built for inline completion |
@@ -113,7 +113,7 @@ ollama pull qwen3.5:9b
 ollama create qwen35-roo:9b -f Modelfile.roo-qwen35-9b
 ```
 
-See `AGENT.RooCode-Setup.md` for the Modelfile content.
+See `roo-code.md` for the Modelfile content.
 
 ---
 
@@ -240,7 +240,7 @@ The `arguments`-based format is valid — it is not broken. Continue renders it 
 - `contextLength` and `num_ctx` must always match — flag any mismatch immediately.
 - The 32B models intentionally use `num_ctx: 12288` for RAM reasons. If the user has abundant RAM, suggest increasing both to `32768`.
 - Continue does not use native Ollama tool calling for chat/autocomplete — `qwen2.5-coder` model compatibility issues in Roo Code do not apply here.
-- For agent mode, `qwen35-roo:9b` is the recommended model. It requires the Roo Modelfile — refer the user to `AGENT.RooCode-Setup.md` for how to build it.
+- For agent mode, `qwen35-roo:9b` is the recommended model. It requires the Roo Modelfile — refer the user to `roo-code.md` for how to build it.
 - The `arguments`-based custom command format in `config.json` is valid Continue syntax — do not flag it as broken.
 - Config file is `~/.continue/config.json`. Hot-reloads on save. `config.yaml` must NOT exist — it breaks Continue silently.
 - If the user sees a blank setup screen with no models, first check for `~/.continue/config.yaml` and delete it.

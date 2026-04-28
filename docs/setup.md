@@ -103,7 +103,7 @@ Test with a simple prompt like `hello` — Roo should respond without the `MODEL
 
 ## 6. Configure Continue
 
-Copy `~/.continue/config.yaml` from this repo, or see `SETUP.Continue.md` for the full config and setup steps.
+Copy `~/.continue/config.yaml` from this repo, or see `continue.md` for the full config and setup steps.
 
 Continue v1.x uses `config.yaml` — not `config.json`. If both exist, `config.yaml` takes precedence.
 
@@ -145,10 +145,10 @@ Expected output: `OK`
 
 | File | Purpose |
 |---|---|
-| `Modelfile.roo-qwen35-9b` | Roo alias for qwen3.5:9b — recommended daily driver |
-| `Modelfile.roo-qwen35-2b` | Roo alias for qwen3.5:2b — low-RAM fallback |
-| `SETUP.RooCode.md` | Roo Code-specific setup and gotchas |
-| `SETUP.Continue.md` | Continue-specific setup, agent mode, and issues |
-| `SETUP.Models.md` | How the Modelfiles work and all model explanations |
-| `TLDR.md` | One-page summary of model compatibility findings |
-| `roo-ollama-tool-calling-tutorial.md` | Full diagnostic guide |
+| `../Modelfile.roo-qwen35-9b` | Roo alias for qwen3.5:9b — recommended daily driver |
+| `../Modelfile.roo-qwen35-2b` | Roo alias for qwen3.5:2b — low-RAM fallback |
+| `roo-code.md` | Roo Code-specific setup and gotchas |
+| `continue.md` | Continue-specific setup, agent mode, and issues |
+| `models.md` | How the Modelfiles work and all model explanations |
+| `../TLDR.md` | One-page summary of model compatibility findings |
+| `troubleshooting.md` | Full diagnostic guide |

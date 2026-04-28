@@ -44,4 +44,4 @@ ollama create qwen35-roo:9b -f Modelfile.roo-qwen35-9b
 |---|---|
 | `Modelfile.roo-qwen35-9b` | Roo-optimised alias for qwen3.5:9b (recommended) |
 | `Modelfile.roo-qwen35-2b` | Roo-optimised alias for qwen3.5:2b (low-RAM fallback) |
-| `roo-ollama-tool-calling-tutorial.md` | Full step-by-step guide with diagnostics |
+| `docs/troubleshooting.md` | Full step-by-step guide with diagnostics |

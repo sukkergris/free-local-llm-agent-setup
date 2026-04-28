@@ -24,6 +24,8 @@ ollama pull qwen3.5:2b
 ollama create qwen35-roo:2b -f Modelfile.roo-qwen35-2b
 ```
 
+> Commands above assume you run them from the repo root where the Modelfiles live.
+
 ## Configure Roo Code in VS Code
 
 1. Click the Roo Code icon in the sidebar
@@ -74,13 +76,13 @@ The `qwen3.5` family uses the native function calling mechanism Roo Code require
 
 ## Why `/no_think` in the Modelfile?
 
-Qwen3.5 models have a built-in thinking phase. During streaming, thinking tokens bleed into the message content and cause the model to fall back to XML-format tool calls instead of native function calling — which Roo Code can't parse. The `/no_think` token at the top of the system prompt disables this. See `SETUP.Models.md` for details.
+Qwen3.5 models have a built-in thinking phase. During streaming, thinking tokens bleed into the message content and cause the model to fall back to XML-format tool calls instead of native function calling — which Roo Code can't parse. The `/no_think` token at the top of the system prompt disables this. See `models.md` for details.
 
 ## See Also
 
-- `Modelfile.roo-qwen35-9b` — the recommended alias definition
-- `Modelfile.roo-qwen35-2b` — the fallback alias definition
-- `SETUP.Models.md` — how the Modelfiles work
-- `SETUP.md` — full machine setup including Continue
-- `TLDR.md` — one-page model compatibility summary
-- `roo-ollama-tool-calling-tutorial.md` — full diagnostic guide
+- `../Modelfile.roo-qwen35-9b` — the recommended alias definition
+- `../Modelfile.roo-qwen35-2b` — the fallback alias definition
+- `models.md` — how the Modelfiles work
+- `setup.md` — full machine setup including Continue
+- `../TLDR.md` — one-page model compatibility summary
+- `troubleshooting.md` — full diagnostic guide
