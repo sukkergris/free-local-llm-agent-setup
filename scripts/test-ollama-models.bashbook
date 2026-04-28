@@ -9,7 +9,7 @@
     {
       "kind": 2,
       "languageId": "shellscript",
-      "value": "./scripts/test-ollama-models.sh --help",
+      "value": "./test-ollama-models.sh --help",
       "metadata": {}
     },
     {
@@ -21,7 +21,7 @@
     {
       "kind": 2,
       "languageId": "shellscript",
-      "value": "TASK=short NUM_PREDICT=64 ./scripts/test-ollama-models.sh qwen35-roo:2b",
+      "value": "TASK=short NUM_PREDICT=64 ./test-ollama-models.sh qwen35-roo:2b",
       "metadata": {}
     },
     {
@@ -33,7 +33,7 @@
     {
       "kind": 2,
       "languageId": "shellscript",
-      "value": "TASK=short NUM_PREDICT=128 ./scripts/test-ollama-models.sh qwen35-roo:9b",
+      "value": "TASK=short NUM_PREDICT=128 ./test-ollama-models.sh qwen35-roo:9b",
       "metadata": {}
     },
     {
@@ -45,7 +45,7 @@
     {
       "kind": 2,
       "languageId": "shellscript",
-      "value": "TASK=csharp NUM_PREDICT=256 ./scripts/test-ollama-models.sh qwen35-roo:9b qwen35-roo:2b qwen2.5-coder:7b",
+      "value": "TASK=csharp NUM_PREDICT=256 ./test-ollama-models.sh qwen35-roo:9b qwen35-roo:2b qwen2.5-coder:7b",
       "metadata": {}
     },
     {
@@ -57,7 +57,7 @@
     {
       "kind": 2,
       "languageId": "shellscript",
-      "value": "TASK=elm NUM_PREDICT=256 ./scripts/test-ollama-models.sh qwen35-roo:9b qwen35-roo:2b qwen2.5-coder:7b",
+      "value": "TASK=elm NUM_PREDICT=256 ./test-ollama-models.sh qwen35-roo:9b qwen35-roo:2b qwen2.5-coder:7b",
       "metadata": {}
     },
     {
@@ -69,7 +69,7 @@
     {
       "kind": 2,
       "languageId": "shellscript",
-      "value": "TASK=dockerfile NUM_PREDICT=256 ./scripts/test-ollama-models.sh qwen35-roo:9b qwen35-roo:2b qwen2.5-coder:7b",
+      "value": "TASK=dockerfile NUM_PREDICT=256 ./test-ollama-models.sh qwen35-roo:9b qwen35-roo:2b qwen2.5-coder:7b",
       "metadata": {}
     },
     {
@@ -81,7 +81,7 @@
     {
       "kind": 2,
       "languageId": "shellscript",
-      "value": "TASK=custom PROMPT=\"Write a docker-compose.yml for a .NET API, Postgres, healthchecks, and named volumes. Return YAML only.\" NUM_PREDICT=256 ./scripts/test-ollama-models.sh qwen35-roo:9b qwen35-roo:2b",
+      "value": "TASK=custom PROMPT=\"Write a docker-compose.yml for a .NET API, Postgres, healthchecks, and named volumes. Return YAML only.\" NUM_PREDICT=256 ./test-ollama-models.sh qwen35-roo:9b qwen35-roo:2b",
       "metadata": {}
     },
     {
@@ -93,13 +93,13 @@
     {
       "kind": 2,
       "languageId": "shellscript",
-      "value": "find output/model-tests -maxdepth 2 -name results.csv | sort | tail -5",
+      "value": "find ../output/model-tests -maxdepth 2 -name results.csv | sort | tail -5",
       "metadata": {}
     },
     {
       "kind": 2,
       "languageId": "shellscript",
-      "value": "latest=$(find output/model-tests -maxdepth 2 -name results.csv | sort | tail -1)\necho \"$latest\"\nif [ -n \"$latest\" ]; then\n  column -s, -t \"$latest\" | sed -n '1,12p'\nfi",
+      "value": "latest=$(find ../output/model-tests -maxdepth 2 -name results.csv | sort | tail -1)\necho \"$latest\"\nif [ -n \"$latest\" ]; then\n  column -s, -t \"$latest\" | sed -n '1,12p'\nfi",
       "metadata": {}
     }
   ]
