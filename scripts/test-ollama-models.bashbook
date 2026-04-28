@@ -1,0 +1,106 @@
+{
+  "cells": [
+    {
+      "kind": 1,
+      "languageId": "markdown",
+      "value": "# Ollama Model Tests\n\nRun these cells to benchmark your local Ollama models for speed, saved responses, and native tool-calling. Results are written to `output/model-tests/`.",
+      "metadata": {}
+    },
+    {
+      "kind": 2,
+      "languageId": "shellscript",
+      "value": "./scripts/test-ollama-models.sh --help",
+      "metadata": {}
+    },
+    {
+      "kind": 1,
+      "languageId": "markdown",
+      "value": "## Fast Sanity Test\n\nUse this first. It checks that Ollama is reachable and that the lightweight Roo model can call tools.",
+      "metadata": {}
+    },
+    {
+      "kind": 2,
+      "languageId": "shellscript",
+      "value": "TASK=short NUM_PREDICT=64 ./scripts/test-ollama-models.sh qwen35-roo:2b",
+      "metadata": {}
+    },
+    {
+      "kind": 1,
+      "languageId": "markdown",
+      "value": "## Daily Roo Model\n\nThis tests the 9B Roo alias you normally use in Roo Code.",
+      "metadata": {}
+    },
+    {
+      "kind": 2,
+      "languageId": "shellscript",
+      "value": "TASK=short NUM_PREDICT=128 ./scripts/test-ollama-models.sh qwen35-roo:9b",
+      "metadata": {}
+    },
+    {
+      "kind": 1,
+      "languageId": "markdown",
+      "value": "## Compare C# Models\n\nCompare the Roo aliases against the fast Continue coder model on a C# task.",
+      "metadata": {}
+    },
+    {
+      "kind": 2,
+      "languageId": "shellscript",
+      "value": "TASK=csharp NUM_PREDICT=256 ./scripts/test-ollama-models.sh qwen35-roo:9b qwen35-roo:2b qwen2.5-coder:7b",
+      "metadata": {}
+    },
+    {
+      "kind": 1,
+      "languageId": "markdown",
+      "value": "## Elm Task",
+      "metadata": {}
+    },
+    {
+      "kind": 2,
+      "languageId": "shellscript",
+      "value": "TASK=elm NUM_PREDICT=256 ./scripts/test-ollama-models.sh qwen35-roo:9b qwen35-roo:2b qwen2.5-coder:7b",
+      "metadata": {}
+    },
+    {
+      "kind": 1,
+      "languageId": "markdown",
+      "value": "## Dockerfile Task",
+      "metadata": {}
+    },
+    {
+      "kind": 2,
+      "languageId": "shellscript",
+      "value": "TASK=dockerfile NUM_PREDICT=256 ./scripts/test-ollama-models.sh qwen35-roo:9b qwen35-roo:2b qwen2.5-coder:7b",
+      "metadata": {}
+    },
+    {
+      "kind": 1,
+      "languageId": "markdown",
+      "value": "## Custom Prompt\n\nEdit the prompt in this cell when you want to test a specific task.",
+      "metadata": {}
+    },
+    {
+      "kind": 2,
+      "languageId": "shellscript",
+      "value": "TASK=custom PROMPT=\"Write a docker-compose.yml for a .NET API, Postgres, healthchecks, and named volumes. Return YAML only.\" NUM_PREDICT=256 ./scripts/test-ollama-models.sh qwen35-roo:9b qwen35-roo:2b",
+      "metadata": {}
+    },
+    {
+      "kind": 1,
+      "languageId": "markdown",
+      "value": "## Latest Results",
+      "metadata": {}
+    },
+    {
+      "kind": 2,
+      "languageId": "shellscript",
+      "value": "find output/model-tests -maxdepth 2 -name results.csv | sort | tail -5",
+      "metadata": {}
+    },
+    {
+      "kind": 2,
+      "languageId": "shellscript",
+      "value": "latest=$(find output/model-tests -maxdepth 2 -name results.csv | sort | tail -1)\necho \"$latest\"\nif [ -n \"$latest\" ]; then\n  column -s, -t \"$latest\" | sed -n '1,12p'\nfi",
+      "metadata": {}
+    }
+  ]
+}

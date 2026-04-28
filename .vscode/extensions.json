@@ -1,0 +1,13 @@
+{
+  "recommendations": [
+    "andreasarvidsson.bashbook",
+    "continue.continue",
+    "rooveterinaryinc.roo-cline",
+    "editorconfig.editorconfig",
+    "ms-dotnettools.csharp",
+    "csharpier.csharpier-vscode",
+    "timonwong.shellcheck",
+    "elmtooling.elm-ls-vscode",
+    "ms-azuretools.vscode-docker"
+  ]
+}
