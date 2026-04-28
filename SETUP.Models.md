@@ -4,7 +4,7 @@ The base `qwen3.5` models from Ollama work but are not tuned for Roo Code out of
 
 ## The Modelfile
 
-A Modelfile has two parts:
+A Modelfile has three parts:
 
 **`FROM`** — which base model to build on top of:
 ```
@@ -13,7 +13,7 @@ FROM qwen3.5:9b
 
 **`PARAMETER`** — runtime settings baked into the alias:
 ```
-PARAMETER num_ctx 32768    # context window — keep large for code tasks
+PARAMETER num_ctx 32768    # context window — must be large for Roo Code's system prompt
 PARAMETER temperature 0.7  # some creativity, not too random
 PARAMETER top_p 0.9
 PARAMETER repeat_penalty 1.1
@@ -29,7 +29,7 @@ Do not answer with plain conversational text when a tool is available...
 """
 ```
 
-The `/no_think` prefix is a Qwen3 special token that disables the model's thinking phase. Without it, the model outputs `<think>...</think>` reasoning tokens before responding, which causes it to fall back to XML-format tool calls instead of native function calling — breaking Roo Code.
+The `/no_think` prefix is a Qwen3 special token that disables the model's thinking phase. Without it, the model outputs `<think>...</think>` reasoning tokens during streaming, which causes it to fall back to XML-format tool calls instead of native function calling — breaking Roo Code.
 
 The base model weights are **not modified**. `ollama create` layers metadata on top of the existing model — no fine-tuning involved.
 
@@ -61,6 +61,10 @@ ollama list
 |---|---|---|
 | `qwen35-roo:9b` | `qwen3.5:9b` | Code tasks — recommended daily driver |
 | `qwen35-roo:2b` | `qwen3.5:2b` | Quick/small tasks — low-RAM fallback |
+
+## Critical: num_ctx in Roo Code Settings
+
+The Modelfile sets `num_ctx 32768`. Roo Code's settings UI has a **Context Window Size (num_ctx)** field — leave it **empty**. If you enter a value there, it overrides the Modelfile. The default when populated is 4096, which is barely enough for Roo's system prompt alone and causes immediate failures.
 
 ## The Continue Models
 

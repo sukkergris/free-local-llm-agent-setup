@@ -6,17 +6,18 @@ This tutorial recreates the fix for this Roo Code error:
 The model provided text/reasoning but did not call any of the required tools.
 ```
 
-The short version: Roo Code requires the model to call a tool such as `attempt_completion` or `ask_followup_question`. Many models respond in plain text or JSON text instead, which makes Roo retry and get stuck. The fix is to use a model from the `qwen3.5` family and create a Roo-friendly Ollama alias with a pinned context window and a stricter system instruction.
+There are two root causes — both must be fixed:
+
+1. **Thinking mode** — Qwen3.5 models output `<think>...</think>` tokens during streaming, causing them to fall back to XML-format tool calls that Roo Code can't parse. Fixed with `/no_think` in the system prompt.
+2. **Context window too small** — Roo Code's `num_ctx` setting defaults to 4096 when populated, overriding the Modelfile. Roo's system prompt alone is ~4k tokens. Fixed by leaving the field empty.
 
 ## 1. Confirm Ollama Is Running
-
-Run:
 
 ```sh
 ollama list
 ```
 
-You should see your installed models. In this setup, the important source model is:
+You should see your installed models. The required source model is:
 
 ```text
 qwen3.5:9b
@@ -41,7 +42,7 @@ PARAMETER top_p 0.9
 PARAMETER repeat_penalty 1.1
 PARAMETER presence_penalty 0
 
-SYSTEM """
+SYSTEM """/no_think
 You are running inside Roo Code as a coding agent.
 When tools are provided, respond by calling the appropriate tool.
 Do not answer with plain conversational text when a tool is available and the task can be completed or needs clarification.
@@ -49,15 +50,15 @@ For greetings or completed trivial requests, use attempt_completion or ask_follo
 """
 ```
 
-## 3. Build The Ollama Alias
+The `/no_think` token at the start of the system prompt disables Qwen3.5's thinking phase, preventing it from falling back to XML tool calls during streaming.
 
-Run this from the same folder as the Modelfile:
+## 3. Build The Ollama Alias
 
 ```sh
 ollama create qwen35-roo:9b -f Modelfile.roo-qwen35-9b
 ```
 
-Then confirm it exists:
+Confirm it exists:
 
 ```sh
 ollama list
@@ -65,8 +66,6 @@ ollama list
 ```
 
 ## 4. Verify The Alias Settings
-
-Run:
 
 ```sh
 ollama show qwen35-roo:9b
@@ -85,20 +84,13 @@ Parameters
 
 ## 5. Test Native Tool Calling
 
-Run this command:
-
 ```sh
 curl -s http://localhost:11434/api/chat \
   -H 'Content-Type: application/json' \
   -d '{
     "model": "qwen35-roo:9b",
     "stream": false,
-    "messages": [
-      {
-        "role": "user",
-        "content": "hello"
-      }
-    ],
+    "messages": [{"role": "user", "content": "hello"}],
     "tools": [
       {
         "type": "function",
@@ -109,10 +101,7 @@ curl -s http://localhost:11434/api/chat \
             "type": "object",
             "required": ["result"],
             "properties": {
-              "result": {
-                "type": "string",
-                "description": "Final response to the user"
-              }
+              "result": {"type": "string", "description": "Final response to the user"}
             }
           }
         }
@@ -126,10 +115,7 @@ curl -s http://localhost:11434/api/chat \
             "type": "object",
             "required": ["question"],
             "properties": {
-              "question": {
-                "type": "string",
-                "description": "Question to ask the user"
-              }
+              "question": {"type": "string", "description": "Question to ask the user"}
             }
           }
         }
@@ -138,71 +124,46 @@ curl -s http://localhost:11434/api/chat \
   }'
 ```
 
-A good response contains a real `tool_calls` field, similar to:
+A good response contains a `tool_calls` field:
 
 ```json
 "tool_calls": [
   {
     "function": {
       "name": "attempt_completion",
-      "arguments": {
-        "result": "Hello! How can I help you today?"
-      }
+      "arguments": {"result": "Hello! How can I help you today?"}
     }
   }
 ]
 ```
 
-If you only see normal chat text and no `tool_calls`, recreate the alias from step 3 and test again.
+If you only see plain text and no `tool_calls`, recreate the alias from step 3 and test again.
 
 ## 6. Configure Roo Code
 
-In VS Code:
-
-1. Open Roo Code.
+1. Open Roo Code in VS Code.
 2. Click the settings gear.
-3. Set `API Provider` to `Ollama`.
-4. Set `Base URL` to:
+3. Set **API Provider** → `Ollama`
+4. Set **Base URL** → `http://localhost:11434`
+5. Set **Model ID** → `qwen35-roo:9b`
+6. Leave **Context Window Size (num_ctx)** → **empty**
+7. Save.
 
-```text
-http://localhost:11434
-```
+> **Critical:** Do not enter a value in the `num_ctx` field. Roo Code defaults it to 4096 when populated, overriding the Modelfile's 32768. Roo's system prompt is ~4k tokens — a 4096 context leaves no room for the actual task and causes immediate failures.
 
-5. Set `Model ID` to:
-
-```text
-qwen35-roo:9b
-```
-
-6. Start a new Roo task and test with:
-
-```text
-hello
-```
-
-Roo should no longer loop on the "did not use a tool" diagnostic.
+Test with `hello` — Roo should respond without looping.
 
 ## 7. Optional: Stop Large Test Models
 
-If you loaded a large model while testing, check what is still running:
-
 ```sh
-ollama ps
+ollama ps          # see what's loaded in memory
+ollama stop qwen35-roo:9b   # free RAM without deleting the model
 ```
-
-Stop a loaded model if needed:
-
-```sh
-ollama stop qwen35-roo:9b
-```
-
-This only frees runtime memory. It does not delete the model.
 
 ## Notes
 
-- `qwen35-roo:9b` is the recommended model — reliably emits native `tool_calls` (5/5 in testing) and produces good quality responses. Use `Modelfile.roo-qwen35-9b` to create it.
-- `qwen35-roo:2b` is a low-RAM fallback — occasionally produces plain text instead of tool calls under load.
-- `qwen2.5-coder:7b` and `qwen2.5-coder:32b` do **not** work with Roo Code — they output JSON-formatted text instead of native `tool_calls`, causing the `MODEL_NO_TOOLS_USED` error. They are fine for Continue (chat/autocomplete).
-- `qwen2.5:32b` also supports native `tool_calls` if you need a large general-purpose model.
-- The `num_ctx 32768` setting is important for coding-agent workflows.
-- `qwen3.5` only comes in specific sizes on Ollama. As of testing: `0.8b`, `2b`, `4b`, `9b`, `27b`, `35b`. There is no `7b`.
+- `qwen35-roo:9b` is the recommended model — 5/5 reliable native `tool_calls`, good code quality.
+- `qwen35-roo:2b` is the low-RAM fallback — same fixes applied, smaller and faster.
+- `qwen2.5-coder:7b` and `qwen2.5-coder:32b` do **not** work with Roo Code. They output JSON-formatted text instead of native `tool_calls`. They are fine for Continue (chat/autocomplete).
+- `qwen3.5` available sizes on Ollama: `0.8b`, `2b`, `4b`, `9b`, `27b`, `35b`. There is no `7b`.
+- The `num_ctx` field in Roo Code settings must be left empty — the Modelfile handles it.

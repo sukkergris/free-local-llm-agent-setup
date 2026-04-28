@@ -92,7 +92,10 @@ code --install-extension continue.continue
 3. Set **API Provider** → `Ollama`
 4. Set **Base URL** → `http://localhost:11434`
 5. Set **Model ID** → `qwen35-roo:9b`
-6. Save.
+6. Leave **Context Window Size (num_ctx)** → **empty**
+7. Save.
+
+> **Critical:** Leave the `num_ctx` field empty. If populated, Roo Code overrides the Modelfile's `num_ctx 32768` with 4096 — barely enough for Roo's system prompt, causing immediate failures.
 
 Test with a simple prompt like `hello` — Roo should respond without the `MODEL_NO_TOOLS_USED` error.
 
@@ -179,6 +182,7 @@ Expected output: `OK`
 |---|---|
 | `Modelfile.roo-qwen35-9b` | Roo alias for qwen3.5:9b — recommended daily driver |
 | `Modelfile.roo-qwen35-2b` | Roo alias for qwen3.5:2b — low-RAM fallback |
-| `SETUP.RooCode.md` | Roo Code-specific setup and model explanation |
+| `SETUP.RooCode.md` | Roo Code-specific setup and gotchas |
+| `SETUP.Models.md` | How the Modelfiles work and all model explanations |
 | `TLDR.md` | One-page summary of model compatibility findings |
 | `roo-ollama-tool-calling-tutorial.md` | Full diagnostic guide |
