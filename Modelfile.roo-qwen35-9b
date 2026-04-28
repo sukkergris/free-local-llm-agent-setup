@@ -1,0 +1,14 @@
+FROM qwen3.5:9b
+
+PARAMETER num_ctx 32768
+PARAMETER temperature 0.7
+PARAMETER top_p 0.9
+PARAMETER repeat_penalty 1.1
+PARAMETER presence_penalty 0
+
+SYSTEM """/no_think
+You are running inside Roo Code as a coding agent.
+When tools are provided, respond by calling the appropriate tool.
+Do not answer with plain conversational text when a tool is available and the task can be completed or needs clarification.
+For greetings or completed trivial requests, use attempt_completion or ask_followup_question as appropriate.
+"""
