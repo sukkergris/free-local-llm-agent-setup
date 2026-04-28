@@ -103,44 +103,9 @@ Test with a simple prompt like `hello` — Roo should respond without the `MODEL
 
 ## 6. Configure Continue
 
-Copy `~/.continue/config.json` from this repo or create it at that path with:
+Copy `~/.continue/config.yaml` from this repo, or see `SETUP.Continue.md` for the full config and setup steps.
 
-```json
-{
-  "models": [
-    {
-      "title": "Qwen 2.5 Coder 32B (Balanced)",
-      "model": "qwen2.5-coder:32b",
-      "provider": "ollama",
-      "contextLength": 128000,
-      "requestOptions": {
-        "num_ctx": 12288,
-        "num_predict": 2048,
-        "temperature": 0.1
-      }
-    },
-    {
-      "title": "Qwen 2.5 Coder 7B (Fast)",
-      "model": "qwen2.5-coder:7b",
-      "provider": "ollama",
-      "contextLength": 32768,
-      "requestOptions": {
-        "num_ctx": 32768,
-        "num_predict": 2048,
-        "temperature": 0.1
-      }
-    }
-  ],
-  "tabAutocompleteModel": {
-    "title": "Starcoder 3b",
-    "provider": "ollama",
-    "model": "starcoder2:3b"
-  },
-  "embeddingsProvider": {
-    "provider": "transformers.js"
-  }
-}
-```
+Continue v1.x uses `config.yaml` — not `config.json`. If both exist, `config.yaml` takes precedence.
 
 ---
 
@@ -183,6 +148,7 @@ Expected output: `OK`
 | `Modelfile.roo-qwen35-9b` | Roo alias for qwen3.5:9b — recommended daily driver |
 | `Modelfile.roo-qwen35-2b` | Roo alias for qwen3.5:2b — low-RAM fallback |
 | `SETUP.RooCode.md` | Roo Code-specific setup and gotchas |
+| `SETUP.Continue.md` | Continue-specific setup, agent mode, and issues |
 | `SETUP.Models.md` | How the Modelfiles work and all model explanations |
 | `TLDR.md` | One-page summary of model compatibility findings |
 | `roo-ollama-tool-calling-tutorial.md` | Full diagnostic guide |
